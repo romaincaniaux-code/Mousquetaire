@@ -5,8 +5,60 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Mousquetaire"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Connexion - Prep'Order"
+        Height="620" Width="960"
+        MinHeight="540" MinWidth="720"
+        WindowStartupLocation="CenterScreen"
+        Background="#F4F4F4">
+    <Window.Resources>
+        <Style x:Key="FieldInputStyle" TargetType="Control">
+            <Setter Property="Height" Value="46" />
+            <Setter Property="Padding" Value="12,0" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Foreground" Value="#171717" />
+            <Setter Property="Background" Value="White" />
+            <Setter Property="BorderBrush" Value="#D1D1D1" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+        </Style>
+    </Window.Resources>
 
+    <Grid>
+        <Border Width="420"
+                Padding="40"
+                Background="White"
+                CornerRadius="16"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="28" ShadowDepth="4" Opacity="0.12" Color="#24324A" />
+            </Border.Effect>
+
+            <StackPanel>
+                <Border Width="52" Height="52" CornerRadius="14" Background="#171717" HorizontalAlignment="Left">
+                    <TextBlock Text="P" Foreground="#D7193F" FontSize="25" FontWeight="Bold"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+
+                <TextBlock Text="Bienvenue" Margin="0,28,0,6" FontSize="28" FontWeight="SemiBold" Foreground="#171717" />
+                <TextBlock Text="Connectez-vous à Prep'Order"
+                           Margin="0,0,0,28" FontSize="14" Foreground="#555555" TextWrapping="Wrap" />
+
+                <TextBlock Text="Identifiant" Margin="0,0,0,8" FontSize="13" FontWeight="SemiBold" Foreground="#171717" />
+                <TextBox x:Name="LoginTextBox" Style="{StaticResource FieldInputStyle}"
+                         AutomationProperties.Name="Identifiant" />
+
+                <TextBlock Text="Mot de passe" Margin="0,20,0,8" FontSize="13" FontWeight="SemiBold" Foreground="#171717" />
+                <PasswordBox x:Name="PasswordInput" Style="{StaticResource FieldInputStyle}"
+                             AutomationProperties.Name="Mot de passe" />
+
+                <Button Content="Se connecter" Click="LoginButton_Click" IsDefault="True"
+                        Height="48" Margin="0,28,0,0" Background="#D7193F" Foreground="White"
+                        BorderThickness="0" FontSize="15" FontWeight="SemiBold" Cursor="Hand" />
+
+                <TextBlock x:Name="StatusText" Margin="0,16,0,0" FontSize="13"
+                           Foreground="#B42318" TextWrapping="Wrap" Visibility="Collapsed" />
+            </StackPanel>
+        </Border>
     </Grid>
 </Window>
