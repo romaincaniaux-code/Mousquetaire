@@ -48,9 +48,15 @@ namespace Mousquetaire
                         Value = PasswordInput.Password
                     });
 
-                AfficherStatut(utilisateur is null
-                    ? "Identifiant ou mot de passe incorrect."
-                    : $"Bienvenue {utilisateur.Prenom} {utilisateur.Nom}");
+                if (utilisateur is null)
+                {
+                    AfficherStatut("Identifiant ou mot de passe incorrect.");
+                    return;
+                }
+
+                var fenetrePrincipale = new FenetrePrincipale(utilisateur);
+                fenetrePrincipale.Show();
+                Close();
             }
             catch (SqlException ex)
             {

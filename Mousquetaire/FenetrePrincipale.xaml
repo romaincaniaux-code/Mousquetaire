@@ -1,0 +1,59 @@
+<Window x:Class="Mousquetaire.FenetrePrincipale"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Prep'Order"
+        Height="720" Width="1100"
+        MinHeight="600" MinWidth="820"
+        WindowStartupLocation="CenterScreen"
+        Background="#F4F4F4">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top" Padding="8">
+            <MenuItem Header="Accueil" Click="AccueilMenu_Click" />
+
+            <MenuItem x:Name="ResponsableCommandesMenu" Header="Commandes" Visibility="Collapsed">
+                <MenuItem Header="Importer un fichier CSV" Click="ImporterCommandes_Click" />
+                <MenuItem Header="Commandes importées" Click="CommandesImportees_Click" />
+                <MenuItem Header="Répartition par zone" Click="RepartitionCommandes_Click" />
+                <MenuItem Header="Assigner les préparateurs" Click="AssignerPreparateurs_Click" />
+                <MenuItem Header="Suivi des commandes" Click="SuiviCommandes_Click" />
+            </MenuItem>
+            <MenuItem x:Name="ResponsableUtilisateursMenu" Header="Utilisateurs" Visibility="Collapsed">
+                <MenuItem Header="Comptes utilisateurs" Click="ComptesUtilisateurs_Click" />
+                <MenuItem Header="Rôles et zones" Click="RolesEtZones_Click" />
+            </MenuItem>
+
+            <MenuItem x:Name="PreparateurCommandesMenu" Header="Commandes" Visibility="Collapsed">
+                <MenuItem Header="Mes commandes" Click="MesCommandes_Click" />
+                <MenuItem Header="Détails des commandes" Click="DetailsCommandes_Click" />
+                <MenuItem Header="Statut de préparation" Click="StatutPreparation_Click" />
+            </MenuItem>
+            <MenuItem x:Name="PreparateurReapproMenu" Header="Réapprovisionnement picking" Visibility="Collapsed">
+                <MenuItem Header="Demander une palette" Click="DemanderPalette_Click" />
+                <MenuItem Header="Palettes disponibles" Click="PalettesDisponibles_Click" />
+            </MenuItem>
+
+            <MenuItem x:Name="CaristeDemandesMenu" Header="Demandes de palettes" Visibility="Collapsed">
+                <MenuItem Header="Liste des demandes" Click="ListeDemandes_Click" />
+                <MenuItem Header="Détail d'une demande" Click="DetailsDemande_Click" />
+            </MenuItem>
+            <MenuItem x:Name="CaristePickingMenu" Header="Picking" Visibility="Collapsed">
+                <MenuItem Header="Confirmer un déplacement" Click="ConfirmerDeplacement_Click" />
+            </MenuItem>
+            <MenuItem x:Name="CaristeStockageMenu" Header="Stockage en hauteur" Visibility="Collapsed">
+                <MenuItem Header="État des racks" Click="EtatRacks_Click" />
+            </MenuItem>
+
+            <Separator />
+            <MenuItem Header="Se déconnecter" Click="LogoutMenu_Click" />
+        </Menu>
+
+        <Border DockPanel.Dock="Bottom"
+                Background="White"
+                Padding="12,8">
+            <TextBlock x:Name="UserStatusText" Foreground="#555555" />
+        </Border>
+
+        <Frame x:Name="ContentFrame"
+               NavigationUIVisibility="Hidden" />
+    </DockPanel>
+</Window>

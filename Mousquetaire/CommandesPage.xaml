@@ -1,0 +1,183 @@
+<Page
+    x:Class="Mousquetaire.CommandesPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Commandes"
+    Background="#F4F4F4">
+    <Page.Resources>
+        <Style x:Key="CommandesHeaderStyle" TargetType="{x:Type GridViewColumnHeader}">
+            <Setter Property="Background" Value="#F7F8FA" />
+            <Setter Property="Foreground" Value="#4B5563" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+            <Setter Property="Padding" Value="12,0" />
+            <Setter Property="Height" Value="36" />
+            <Setter Property="BorderBrush" Value="#E5E7EB" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="HorizontalContentAlignment" Value="Left" />
+        </Style>
+        <Style x:Key="CommandeRowStyle" TargetType="ListViewItem">
+            <Setter Property="Height" Value="38" />
+            <Setter Property="Padding" Value="8,0" />
+            <Setter Property="FontFamily" Value="Segoe UI" />
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Foreground" Value="#374151" />
+            <Setter Property="BorderBrush" Value="#F0F1F3" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListViewItem">
+                        <Border x:Name="RowBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <GridViewRowPresenter Content="{TemplateBinding Content}"
+                                                  Columns="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListView}}, Path=View.Columns}"
+                                                  VerticalAlignment="Center" />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="ItemsControl.AlternationIndex" Value="1">
+                                <Setter TargetName="RowBorder" Property="Background" Value="#FCFCFD" />
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="RowBorder" Property="Background" Value="#F5F7FA" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="RowBorder" Property="Background" Value="#EEF2F6" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ZoneBadgeStyle" TargetType="Border">
+            <Setter Property="Background" Value="#EEF0F3" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Zone}" Value="Sec">
+                    <Setter Property="Background" Value="#FFF4D6" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Zone}" Value="DPH">
+                    <Setter Property="Background" Value="#F0EBFA" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Zone}" Value="Liquide">
+                    <Setter Property="Background" Value="#E1F3F4" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="StatutBadgeStyle" TargetType="Border">
+            <Setter Property="Background" Value="#EEF0F3" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Statut}" Value="En cours">
+                    <Setter Property="Background" Value="#E6EFFA" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Statut}" Value="Terminée">
+                    <Setter Property="Background" Value="#E5F2E9" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Statut}" Value="En attente">
+                    <Setter Property="Background" Value="#FFF4D6" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Statut}" Value="Produit manquant">
+                    <Setter Property="Background" Value="#F8E8E8" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Page.Resources>
+    <Grid Margin="28">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock
+            Grid.ColumnSpan="2"
+            FontSize="28"
+            FontWeight="SemiBold"
+            Foreground="#171717"
+            Text="Commandes" />
+
+        <TextBlock
+            Grid.Row="1"
+            Grid.ColumnSpan="2"
+            Margin="0,8,0,20"
+            FontSize="14"
+            Foreground="#555555"
+            Text="Suivi des commandes, de leur zone de préparation et de leur avancement." />
+
+        <TextBlock
+            x:Name="StatusText"
+            Grid.Row="2"
+            Grid.ColumnSpan="2"
+            Margin="0,0,0,12"
+            FontSize="13"
+            Foreground="#555555"
+            Visibility="Collapsed" />
+
+        <ListView
+            x:Name="CommandesListView"
+            Grid.Row="3"
+            Grid.ColumnSpan="2"
+            AlternationCount="2"
+            Padding="0"
+            FontFamily="Segoe UI"
+            Background="White"
+            BorderBrush="#E2E8F0"
+            BorderThickness="1"
+            ScrollViewer.HorizontalScrollBarVisibility="Auto"
+            ScrollViewer.VerticalScrollBarVisibility="Auto"
+            ItemContainerStyle="{StaticResource CommandeRowStyle}">
+            <ListView.View>
+                <GridView ColumnHeaderContainerStyle="{StaticResource CommandesHeaderStyle}">
+                    <GridViewColumn
+                        Width="130"
+                        DisplayMemberBinding="{Binding NumeroCommande}"
+                        Header="N° commande" />
+                    <GridViewColumn
+                        Width="220"
+                        DisplayMemberBinding="{Binding Magasin}"
+                        Header="Magasin" />
+                    <GridViewColumn Width="120" Header="Zone">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Padding="10,3"
+                                        HorizontalAlignment="Left"
+                                        CornerRadius="10"
+                                        Style="{StaticResource ZoneBadgeStyle}">
+                                    <TextBlock Text="{Binding Zone}"
+                                               FontSize="11"
+                                               FontWeight="SemiBold"
+                                               Foreground="#334155" />
+                                </Border>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn
+                        Width="170"
+                        DisplayMemberBinding="{Binding Preparateur}"
+                        Header="Préparateur" />
+                    <GridViewColumn
+                        Width="180"
+                        DisplayMemberBinding="{Binding Avancement}"
+                        Header="Avancement" />
+                    <GridViewColumn Width="170" Header="Statut">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Border Padding="10,3"
+                                        HorizontalAlignment="Left"
+                                        CornerRadius="10"
+                                        Style="{StaticResource StatutBadgeStyle}">
+                                    <TextBlock Text="{Binding Statut}"
+                                               FontSize="11"
+                                               FontWeight="SemiBold"
+                                               Foreground="#334155" />
+                                </Border>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Page>
