@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Mousquetaire.Models.Database;
+namespace Mousquetaire.Models;
 
 public partial class Commande
 {
