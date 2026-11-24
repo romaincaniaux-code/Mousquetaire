@@ -1,13 +1,7 @@
-﻿using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using Microsoft.Data.SqlClient;
+using Mousquetaire.Data;
+using Mousquetaire.Models;
 
 namespace Mousquetaire
 {
@@ -20,5 +14,55 @@ namespace Mousquetaire
         {
             InitializeComponent();
         }
+
+        private async void LoginButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(LoginTextBox.Text) ||
+                string.IsNullOrWhiteSpace(PasswordInput.Password))
+            {
+                AfficherStatut("Veuillez renseigner votre identifiant et votre mot de passe.");
+                return;
+            }
+
+            try
+            {
+                var utilisateur = await StoredProcedureExecutor.QuerySingleAsync(
+                    "dbo.AuthentifierUtilisateur",
+                    reader => new Utilisateur
+                    {
+                        IdUtilisateur = reader.GetInt32(reader.GetOrdinal("idUtilisateur")),
+                        Nom = reader.GetString(reader.GetOrdinal("nom")),
+                        Prenom = reader.GetString(reader.GetOrdinal("prenom")),
+                        Actif = true,
+                        IdRole = reader.GetInt32(reader.GetOrdinal("idRole")),
+                        IdZone = reader.IsDBNull(reader.GetOrdinal("idZone"))
+                            ? null
+                            : reader.GetInt32(reader.GetOrdinal("idZone"))
+                    },
+                    new SqlParameter("@login", System.Data.SqlDbType.NVarChar, 50)
+                    {
+                        Value = LoginTextBox.Text.Trim()
+                    },
+                    new SqlParameter("@motDePasse", System.Data.SqlDbType.NVarChar, 100)
+                    {
+                        Value = PasswordInput.Password
+                    });
+
+                AfficherStatut(utilisateur is null
+                    ? "Identifiant ou mot de passe incorrect."
+                    : $"Bienvenue {utilisateur.Prenom} {utilisateur.Nom}");
+            }
+            catch (SqlException ex)
+            {
+                AfficherStatut($"Erreur SQL {ex.Number} : {ex.Message}");
+            }
+        }
+
+        private void AfficherStatut(string message)
+        {
+            StatusText.Text = message;
+            StatusText.Visibility = Visibility.Visible;
+        }
+
     }
 }
